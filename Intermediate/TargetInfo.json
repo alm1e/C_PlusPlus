@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "MarketplacePlugins",
+			"Path": "..\\Source\\MarketplacePlugins.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "MarketplacePluginsEditor",
+			"Path": "..\\Source\\MarketplacePluginsEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}

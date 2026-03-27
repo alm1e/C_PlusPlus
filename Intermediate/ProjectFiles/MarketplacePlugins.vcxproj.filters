@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\.vsconfig" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\MarketplacePlugins.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\MarketplacePlugins.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <None Include="..\..\Source\MarketplacePluginsEditor.Target.cs">
+      <Filter>Source</Filter>
+    </None>
+    <Filter Include="Source\MarketplacePlugins">
+      <UniqueIdentifier>{F5AA6C0B-DE05-3A1F-810C-6C4AE94B60ED}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\MarketplacePlugins\HealthComponent.cpp">
+      <Filter>Source\MarketplacePlugins</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\MarketplacePlugins\HealthComponent.h">
+      <Filter>Source\MarketplacePlugins</Filter>
+    </ClInclude>
+    <None Include="..\..\Source\MarketplacePlugins\MarketplacePlugins.Build.cs">
+      <Filter>Source\MarketplacePlugins</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\MarketplacePlugins\MarketplacePlugins.cpp">
+      <Filter>Source\MarketplacePlugins</Filter>
+    </ClCompile>
+    <ClInclude Include="..\..\Source\MarketplacePlugins\MarketplacePlugins.h">
+      <Filter>Source\MarketplacePlugins</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
