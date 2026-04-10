@@ -1,8 +1,0 @@
-{
-	"SourceFiles": [
-		"D:\\Projects\\MarketplacePlugins\\Source\\MarketplacePlugins\\MarketplacePlugins.Build.cs",
-		"D:\\Projects\\MarketplacePlugins\\Source\\MarketplacePlugins.Target.cs",
-		"D:\\Projects\\MarketplacePlugins\\Source\\MarketplacePluginsEditor.Target.cs"
-	],
-	"EngineVersion": "5.7.4"
-}

@@ -361,3 +361,58 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# --- Специфические папки Unreal Engine ---
+Binaries/
+Build/
+DerivedDataCache/
+Intermediate/
+Saved/
+/Script/
+
+# --- Файлы проекта и IDE ---
+.vscode/
+.vs/
+*.sln
+*.xcworkspace
+*.xcodeproj
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# --- Файлы macOS (очень важно для твоего Mac) ---
+.DS_Store
+*.swp
+*.lock
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# --- Временные файлы компиляции C++ ---
+*.obj
+*.pdb
+*.ilk
+*.exp
+*.lib
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.rsp
+*.pgc
+*.pgd
+*.meta
+*.pch
+
+# --- Игнорируем внешние программы ---
+/Engine/
+/Plugins/Developer/
