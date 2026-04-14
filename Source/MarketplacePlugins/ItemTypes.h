@@ -24,6 +24,9 @@ struct FItemData : public FTableRowBase
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite)
     TSubclassOf<AActor> ItemClass;
+    
+    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    EItemType ItemType;
 
     FItemData()
     {
@@ -31,4 +34,15 @@ struct FItemData : public FTableRowBase
         ItemIcon = nullptr;
         MaxStackSize = 100;
     }
+};
+UENUM(BlueprintType)
+enum class EItemClass : unit8
+{
+    None, 
+    Weapon,
+    Feet,
+    Backpack,
+    Head, 
+    Consumable
+    
 };

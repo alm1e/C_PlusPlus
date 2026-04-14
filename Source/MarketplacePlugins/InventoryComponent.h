@@ -73,6 +73,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory")
 	int32 SplitStack(int32 SlotIndex);
+	
+	UPROPERTY(BlueprintReadOnly, Category = "Inventory")
+	TArray<FInventorySlot> EquipmentSlots;
+	
 
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;	
 };
