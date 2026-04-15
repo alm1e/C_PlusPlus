@@ -1,71 +1,154 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "HealthComponent.h"
+#include "Net/UnrealNetwork.h"
 
-// Sets default values for this component's properties
 UHealthComponent::UHealthComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
+	SetIsReplicatedByDefault(true);
 }
 
-
-// Called when the game starts
 void UHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	CurrentHealth = MaxHealth;
-	CurrentStamina = MaxStamina;
+	if (GetOwner() && GetOwner()->HasAuthority())
+	{
+		CurrentHealth = MaxHealth;
+		CurrentStamina = MaxStamina;
+	}
 
-	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
-	OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
+	BroadcastHealthChanged();
+	BroadcastStaminaChanged();
 }
 
-// Called every frame
 void UHealthComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-	
-	if (bCanRegenerate && CurrentHealth < MaxHealth && CurrentHealth > 0.0f) { // HP Regeneration
-		CurrentHealth += RegenRate * DeltaTime;
-		if (CurrentHealth > MaxHealth) {
-			CurrentHealth = MaxHealth;
-		}
-		OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
+
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return;
 	}
-	
-	if (CurrentStamina < MaxStamina && CurrentHealth > 0.0f) { //Stamina Regeneration
+
+	if (bCanRegenerate && CurrentHealth > 0.0f && CurrentHealth < MaxHealth)
+	{
+		CurrentHealth += RegenRate * DeltaTime;
+		CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaxHealth);
+		BroadcastHealthChanged();
+	}
+
+	if (CurrentHealth > 0.0f && CurrentStamina < MaxStamina)
+	{
 		CurrentStamina += StaminaRegenRate * DeltaTime;
 		CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f, MaxStamina);
-		OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
+		BroadcastStaminaChanged();
 	}
 }
 
-void UHealthComponent::TakeDamage(float DamageAmount) { //TakeDamage
-	if (DamageAmount <= 0.0f || CurrentHealth <= 0.0f) return;
-	CurrentHealth -= DamageAmount;
-	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
+void UHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	if (CurrentHealth <= 0.0f) {
-		CurrentHealth = 0.0f;
-		UE_LOG(LogTemp, Warning, TEXT("Character is dead!"));
+	DOREPLIFETIME(UHealthComponent, CurrentHealth);
+	DOREPLIFETIME(UHealthComponent, CurrentStamina);
+}
 
-		CurrentStamina = 0.0f;
-		OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
+void UHealthComponent::OnRep_CurrentHealth()
+{
+	BroadcastHealthChanged();
 
+	if (CurrentHealth <= 0.0f)
+	{
 		OnDeath.Broadcast();
 	}
 }
 
-void UHealthComponent::UseStamina(float Amount) { //UseStamina
-	if (CurrentHealth <= 0.0f || CurrentStamina < Amount) return; 
+void UHealthComponent::OnRep_CurrentStamina()
+{
+	BroadcastStaminaChanged();
+}
+
+void UHealthComponent::BroadcastHealthChanged()
+{
+	OnHealthChanged.Broadcast(CurrentHealth, MaxHealth);
+}
+
+void UHealthComponent::BroadcastStaminaChanged()
+{
+	OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
+}
+
+void UHealthComponent::RequestTakeDamage(float DamageAmount)
+{
+	if (GetOwner() && GetOwner()->HasAuthority())
+	{
+		TakeDamage_Internal(DamageAmount);
+	}
+	else
+	{
+		ServerTakeDamage(DamageAmount);
+	}
+}
+
+void UHealthComponent::RequestUseStamina(float Amount)
+{
+	if (GetOwner() && GetOwner()->HasAuthority())
+	{
+		UseStamina_Internal(Amount);
+	}
+	else
+	{
+		ServerUseStamina(Amount);
+	}
+}
+
+void UHealthComponent::ServerTakeDamage_Implementation(float DamageAmount)
+{
+	TakeDamage_Internal(DamageAmount);
+}
+
+void UHealthComponent::ServerUseStamina_Implementation(float Amount)
+{
+	UseStamina_Internal(Amount);
+}
+
+void UHealthComponent::TakeDamage_Internal(float DamageAmount)
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
+	if (DamageAmount <= 0.0f || CurrentHealth <= 0.0f)
+	{
+		return;
+	}
+
+	CurrentHealth -= DamageAmount;
+	CurrentHealth = FMath::Clamp(CurrentHealth, 0.0f, MaxHealth);
+	BroadcastHealthChanged();
+
+	if (CurrentHealth <= 0.0f)
+	{
+		CurrentStamina = 0.0f;
+		BroadcastStaminaChanged();
+		OnDeath.Broadcast();
+	}
+}
+
+void UHealthComponent::UseStamina_Internal(float Amount)
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return;
+	}
+
+	if (Amount <= 0.0f || CurrentHealth <= 0.0f || CurrentStamina < Amount)
+	{
+		return;
+	}
 
 	CurrentStamina -= Amount;
-	OnStaminaChanged.Broadcast(CurrentStamina, MaxStamina);
-	
+	CurrentStamina = FMath::Clamp(CurrentStamina, 0.0f, MaxStamina);
+	BroadcastStaminaChanged();
 }
