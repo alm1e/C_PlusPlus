@@ -2,6 +2,18 @@
 
 A gameplay prototype built in **Unreal Engine 5** using **C++ and Blueprints**, focused on **multiplayer melee combat**, **server-authoritative interactions**, and **inventory/pickup systems**.
 
+## Author
+
+**Almas Karnakbayev**  
+Gameplay programming focused Unreal Engine developer
+
+## Links
+
+- Portfolio: https://artstation.com/almie
+- GitHub: https://github.com/alm1e
+- LinkedIn: https://www.linkedin.com/in/alm1e
+- YouTube: https://www.youtube.com/@AlmieGameDev/videos
+
 ## Overview
 
 This project demonstrates a networked gameplay setup where players can:
@@ -209,11 +221,4 @@ Current prototype state:
 
 ---
 
-## Author
 
-**Almas Karnakbayev**  
-Gameplay programming focused Unreal Engine developer
-
-- Portfolio: https://artstation.com/almie
-- GitHub: https://github.com/alm1e
-- LinkedIn: https://www.linkedin.com/in/alm1e
