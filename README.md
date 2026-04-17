@@ -8,7 +8,7 @@ A gameplay prototype built in **Unreal Engine 5** using **C++ and Blueprints**, 
 Gameplay programming focused Unreal Engine developer
 
 ## Links
-
+- Demonstration video: https://youtu.be/EjSa7pfZhjI
 - Portfolio: https://artstation.com/almie
 - GitHub: https://github.com/alm1e
 - LinkedIn: https://www.linkedin.com/in/alm1e
