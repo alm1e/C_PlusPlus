@@ -1,12 +1,12 @@
-// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
-
-
+#include "Engine/DataTable.h"
 #include "ItemTypes.generated.h"
+
+class UTexture2D;
+class AActor;
 
 USTRUCT(BlueprintType)
 struct FItemData : public FTableRowBase
@@ -22,14 +22,14 @@ struct FItemData : public FTableRowBase
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
     int32 MaxStackSize;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Item")
     TSubclassOf<AActor> ItemClass;
-
 
     FItemData()
     {
         ItemName = FName("Empty");
         ItemIcon = nullptr;
         MaxStackSize = 100;
+        ItemClass = nullptr;
     }
 };
