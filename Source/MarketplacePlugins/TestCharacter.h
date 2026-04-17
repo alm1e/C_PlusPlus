@@ -136,4 +136,17 @@ protected:
 
 	UFUNCTION(Server, Reliable, BlueprintCallable)
 	void ServerTryPickupItem(AActor* ItemRef);
+
+	virtual float TakeDamage(
+		float DamageAmount,
+		struct FDamageEvent const& DamageEvent,
+		class AController* EventInstigator,
+		AActor* DamageCauser
+	) override;
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayHitReact();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void Multicast_PlayAttackMontage();
 };

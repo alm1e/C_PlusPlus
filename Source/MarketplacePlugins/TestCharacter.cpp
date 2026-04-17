@@ -204,11 +204,14 @@ void ATestCharacter::Attack(const FInputActionValue& Value)
 
 void ATestCharacter::HandleAttackStarted()
 {
-	if (AttackMontage)
+	UE_LOG(LogTemp, Warning, TEXT("HandleAttackStarted: %s | HasAuthority: %d"), *GetName(), HasAuthority());
+
+	if (HasAuthority())
 	{
-		PlayAnimMontage(AttackMontage);
+		Multicast_PlayAttackMontage();
 	}
 }
+
 
 void ATestCharacter::HandleAttackEnded()
 {
@@ -290,4 +293,46 @@ void ATestCharacter::BP_ExtractPickupData_Implementation(AActor* PickupActor, FI
 {
 	OutAmount = 0;
 	bSuccess = false;
+}
+
+float ATestCharacter::TakeDamage(
+	float DamageAmount,
+	FDamageEvent const& DamageEvent,
+	AController* EventInstigator,
+	AActor* DamageCauser)
+{
+	UE_LOG(LogTemp, Warning, TEXT("TakeDamage called on %s, Damage = %f"), *GetName(), DamageAmount);
+	const float ActualDamage = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+
+	if (ActualDamage <= 0.0f)
+	{
+		return 0.0f;
+	}
+
+	if (Health)
+	{
+		Health->RequestTakeDamage(ActualDamage);
+	}
+
+	Multicast_PlayHitReact();
+
+	return ActualDamage;
+}
+
+void ATestCharacter::Multicast_PlayHitReact_Implementation()
+{
+	if (HitReactMontage)
+	{
+		PlayAnimMontage(HitReactMontage);
+	}
+}
+
+void ATestCharacter::Multicast_PlayAttackMontage_Implementation()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Multicast_PlayAttackMontage: %s"), *GetName());
+
+	if (AttackMontage)
+	{
+		PlayAnimMontage(AttackMontage);
+	}
 }

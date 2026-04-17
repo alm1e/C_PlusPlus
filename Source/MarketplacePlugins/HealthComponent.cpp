@@ -16,7 +16,6 @@ void UHealthComponent::BeginPlay()
 		CurrentHealth = MaxHealth;
 		CurrentStamina = MaxStamina;
 	}
-
 	BroadcastHealthChanged();
 	BroadcastStaminaChanged();
 }

@@ -4,6 +4,7 @@
 #include "GameFramework/Actor.h"
 #include "Components/MeshComponent.h"
 #include "Kismet/KismetSystemLibrary.h"
+#include "Kismet/GameplayStatics.h"
 #include "TimerManager.h"
 #include "Engine/World.h"
 
@@ -201,7 +202,16 @@ void UCombatComponent::PerformAttackHitCheck_Internal()
 			continue;
 		}
 
-		TargetHealthComponent->RequestTakeDamage(AttackDamage);
+		APawn* OwnerPawn = Cast<APawn>(OwnerActor);
+		AController* InstigatorController = OwnerPawn ? OwnerPawn->GetController() : nullptr;
+
+		UGameplayStatics::ApplyDamage(
+			HitActor,
+			AttackDamage,
+			InstigatorController,
+			OwnerActor,
+			UDamageType::StaticClass()
+		);
 		HitActorsThisAttack.Add(HitActor);
 	}
 }
@@ -250,3 +260,4 @@ void UCombatComponent::StopAttackTrace()
 {
 	bTraceAttackActive = false;
 }
+
